@@ -16,4 +16,4 @@ phases:
   pre_build:
     commands:
       - echo "Logging to DockerHub"
-      - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u $DOCKER_REGISTRY_USESRNAME --password-stdin $DOCKER_REGISTRY_PASSWORD
+      - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin $DOCKER_REGISTRY_URL
