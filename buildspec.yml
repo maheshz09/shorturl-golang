@@ -18,6 +18,7 @@ phases:
     commands:
       - echo "Logging to DockerHub"
       - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin $DOCKER_REGISTRY_URL
+      - aws sts get-caller-identity
       - aws eks update-kubeconfig --region us-west-1 --name demo-eks-cluster
       - kubectl config current-context
       - kubectl config view --minify
