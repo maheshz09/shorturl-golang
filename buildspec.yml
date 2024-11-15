@@ -1,0 +1,19 @@
+version: 0.2
+
+env: 
+  parameter-store:
+    DOCKER_REGISTRY_USESRNAME: /golang-app/docker-credentials/password
+    DOCKER_REGISTRY_PASSWORD: /golang-app/docker-credentials/username
+    DOCKER_REGISTRY_URL: /golang-app/docker-credentials/url
+
+phases:
+  install: 
+    commands:
+      - echo Installing dependencies...
+      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x kubectl
+      - mv kubectl /usr/local/bin/
+  pre-build:
+    commands:
+      - echo "Logging to DockerHub"
+      - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u $DOCKER_REGISTRY_USESRNAME --password-stdin $DOCKER_REGISTRY_PASSWORD
