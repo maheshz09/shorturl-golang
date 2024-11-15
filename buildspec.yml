@@ -2,8 +2,8 @@ version: 0.2
 
 env: 
   parameter-store:
-    DOCKER_REGISTRY_USERNAME: /golang-app/docker-credentials/password
-    DOCKER_REGISTRY_PASSWORD: /golang-app/docker-credentials/username
+    DOCKER_REGISTRY_USERNAME: /golang-app/docker-credentials/username
+    DOCKER_REGISTRY_PASSWORD: /golang-app/docker-credentials/password
     DOCKER_REGISTRY_URL: /golang-app/docker-credentials/url
 
 phases:
