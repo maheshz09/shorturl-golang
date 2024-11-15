@@ -17,13 +17,16 @@ phases:
     commands:
       - echo "Logging to DockerHub"
       - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin $DOCKER_REGISTRY_URL
+      - aws eks update-kubeconfig --region us-west-1 --name demo-eks-cluster
   
   build:
     commands: 
       - echo "Building Docker Image"
-      - docker build -t "$DOCKER_REGISTRY_USERNAME/short_url:latest" .
-      - docker push "$DOCKER_REGISTRY_USERNAME/short_url:latest"
+      - docker build -t "$DOCKER_REGISTRY_USERNAME/short_url:$CODEBUILD_RESOLVED_SOURCE_VERSION" .
+      - docker push "$DOCKER_REGISTRY_USERNAME/short_url:$CODEBUILD_RESOLVED_SOURCE_VERSION"
 
   post_build:
     commands:
-      - echo "Docker Image is Pushed "$DOCKER_REGISTRY_USERNAME/short_url:latest""
+      - echo "Docker Image is Pushed"
+      - echo "Deploying the application to EKS"
+      - kubectl set image deployment/shorturl shortenurlapp=$DOCKER_USERNAME/short_url:$CODEBUILD_RESOLVED_SOURCE_VERSION
