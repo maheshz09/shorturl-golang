@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: shortenurlapp
-        image: amaurya07/short_url:5
+        image: amaurya07/short_url:latest
         resources:
           limits:
             memory: "128Mi"
