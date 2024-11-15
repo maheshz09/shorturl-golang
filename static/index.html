@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6, #e6f7ff);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            color: #444;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Animation for fadeIn */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Container for the form */
+        .container {
+            background-color: #ffffff;
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Input field */
+        .container input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1.1rem;
+            color: #333;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .container input:focus {
+            outline: none;
+            border-color: #007BFF;
+        }
+
+        /* Button */
+        .container button {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .container button:hover {
+            background-color: #0056b3;
+        }
+
+        .container button:active {
+            background-color: #004085;
+            transform: scale(0.98);
+        }
+
+        /* Doodle Sticker - Image */
+        .doodle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 80px;
+            height: 80px;
+            z-index: 10;
+        }
+
+        /* Result Box */
+        .result {
+            display: none;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* Loading Indicator */
+        .loading {
+            font-size: 1.1rem;
+            color: #007BFF;
+            margin-top: 15px;
+        }
+
+        /* Error message */
+        .error {
+            font-size: 1rem;
+            color: #d9534f;
+            margin-top: 10px;
+        }
+
+        /* Info Text */
+        .info {
+            font-size: 1rem;
+            color: #555;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        /* Link in the result */
+        .result a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .result a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                width: 80%;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>URL Shortener</h1>
+        <input type="text" id="longUrl" placeholder="Enter your URL" />
+        <button onclick="shortenUrl()">Shorten URL</button>
+        <div id="result" class="result"></div>
+        <div id="loading" class="loading" style="display: none;">Generating your short URL...</div>
+        <div id="error" class="error"></div>
+        <div class="info">
+            <p>Enter any URL and click "Shorten URL" to get a short link</p>
+        </div>
+        <!-- Doodle Sticker as Image -->
+        <img class="doodle" src="https://docrdsfx76ssb.cloudfront.net/static/1730919261/pages/wp-content/uploads/2024/04/icon_product-links.svg" alt="Link illustration symbolizing short links" />
+    </div>
+
+    <script>
+        function isValidUrl(url) {
+            const regex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+            return regex.test(url);
+        }
+
+        function shortenUrl() {
+            var longUrl = document.getElementById('longUrl').value;
+            var resultDiv = document.getElementById('result');
+            var errorDiv = document.getElementById('error');
+            var loadingDiv = document.getElementById('loading');
+
+            // Clear previous results and errors
+            resultDiv.innerHTML = '';
+            errorDiv.innerHTML = '';
+            loadingDiv.style.display = 'block';
+            resultDiv.style.display = 'none';
+
+            if (!longUrl) {
+                errorDiv.innerHTML = 'Please enter a URL.';
+                loadingDiv.style.display = 'none';
+                return;
+            }
+
+            if (!isValidUrl(longUrl)) {
+                errorDiv.innerHTML = 'Invalid URL format. Please enter a valid URL (e.g., http://example.com).';
+                loadingDiv.style.display = 'none';
+                return;
+            }
+
+            fetch('/shorten', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ long_url: longUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadingDiv.style.display = 'none';
+                if (data.short_url) {
+                    resultDiv.style.display = 'block';
+                    resultDiv.innerHTML = `
+                        <p>Short URL: <a href="${data.short_url}" target="_blank">${data.short_url}</a></p>
+                        <p>Click the link above to visit your shortened URL.</p>
+                    `;
+                } else {
+                    errorDiv.innerHTML = 'Error: ' + (data.error || 'Unknown error occurred.');
+                }
+            })
+            .catch(error => {
+                loadingDiv.style.display = 'none';
+                errorDiv.innerHTML = 'Error: ' + error.message;
+            });
+        }
+    </script>
+</body>
+</html>
