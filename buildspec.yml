@@ -13,7 +13,7 @@ phases:
       - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
       - chmod +x kubectl
       - mv kubectl /usr/local/bin/
-  pre-build:
+  pre_build:
     commands:
       - echo "Logging to DockerHub"
       - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u $DOCKER_REGISTRY_USESRNAME --password-stdin $DOCKER_REGISTRY_PASSWORD
