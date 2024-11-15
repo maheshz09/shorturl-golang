@@ -21,6 +21,7 @@ phases:
       - aws eks update-kubeconfig --region us-west-1 --name demo-eks-cluster
       - kubectl config current-context
       - kubectl config view --minify
+      - kubectl get pods
   
   build:
     commands: 
