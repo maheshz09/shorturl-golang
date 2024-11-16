@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: 'https://github.com/amitmaurya07/Golang_AWS_Deployment.git'
     targetRevision: main
-    path: kuberenetes/manifests
+    path: kuberenetes/mainfests
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
