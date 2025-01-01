@@ -32,5 +32,5 @@ phases:
     commands:
       - echo "Docker Image is Pushed"
       - echo "Deploying the application to EKS"
-      - kubectl set image deployment/shorturl-app shorturl-app=$DOCKER_USERNAME/golang-shorturl-app:latest
+      - kubectl set image deployment/shorturl-app shorturl-app=manlineroot12/golang-shorturl-app:latest
       - kubectl get svc
