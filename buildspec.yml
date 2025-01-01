@@ -25,12 +25,12 @@ phases:
   build:
     commands: 
       - echo "Building Docker Image"
-      - docker build -t "$DOCKER_REGISTRY_USERNAME/short_url:latest" .
-      - docker push "$DOCKER_REGISTRY_USERNAME/short_url:latest"
+      - docker build -t "$DOCKER_REGISTRY_USERNAME/golang-shorturl-app:latest" .
+      - docker push "$DOCKER_REGISTRY_USERNAME/golang-shorturl-app:latest"
 
   post_build:
     commands:
       - echo "Docker Image is Pushed"
       - echo "Deploying the application to EKS"
-      - kubectl set image deployment/shorturl shortenurlapp=$DOCKER_USERNAME/short_url:latest
+      - kubectl set image deployment/shorturl golang-shorturl-app=$DOCKER_USERNAME/golang-shorturl-app:latest
       - kubectl get svc
