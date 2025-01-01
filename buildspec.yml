@@ -21,6 +21,8 @@ phases:
       - aws sts get-caller-identity
       - aws eks update-kubeconfig --region ap-south-1 --name demo-eks-cluster
       - kubectl config current-context
+      - kubectl get pods
+      - kubectl get deployments
   
   build:
     commands: 
