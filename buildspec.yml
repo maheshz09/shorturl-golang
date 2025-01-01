@@ -21,8 +21,6 @@ phases:
       - aws sts get-caller-identity
       - aws eks update-kubeconfig --region ap-south-1 --name demo-eks-cluster
       - kubectl config current-context
-      - kubectl get pods
-      - kubectl get deployments
   
   build:
     commands: 
@@ -34,12 +32,3 @@ phases:
     commands:
       - echo "Docker Image is Pushed"
       - echo "Deploying the application to EKS"
-      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-      - curl -LO https://dl.k8s.io/release/v1.32.0/bin/linux/amd64/kubectl
-      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-      - echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-      - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-      - kubectl get deployments
-      - kubectl describe deployment shorturl-app
-      - kubectl patch deployment shorturl-app -p '{"spec":{"template":{"spec":{"containers":[{"name":"shorturl-app","image":"manlineroot12/golang-shorturl-app:latest"}]}}}}'
-      - kubectl get svc
