@@ -3,7 +3,7 @@ run-as: root
  
 env: 
   parameter-store:
-    DOCKER_REGISTRY_USERNAME: /docker/python-project/username
+    DOCKER_REGISTRY_USERNAME: manlineroot12
     DOCKER_REGISTRY_PASSWORD: /docker/python-project/password
     DOCKER_REGISTRY_URL: /docker/python-project/url
 
