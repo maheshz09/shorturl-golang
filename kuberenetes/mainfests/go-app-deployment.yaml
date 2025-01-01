@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/amitmaurya07/Golang_AWS_Deployment.git'
+    repoURL: 'https://github.com/maheshz09/shorturl-golang.git'
     targetRevision: main
     path: kuberenetes/mainfests
   destination:
